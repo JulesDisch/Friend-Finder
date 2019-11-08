@@ -5,7 +5,7 @@ body, html {
 }
 
 html {
-  background-image: url("../../../Responsive-Portfolio/assets/images/another.jpg");
+  background-image: url("../images/another.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -147,8 +147,17 @@ h1 {
 } 
   
 h2 {
+  font-size: 20px;
+  margin-top: 30px;
+  color: darkslateblue;
   padding-top: 20px;
-  color: white;
+  padding-bottom: 20px;
+  
+}
+
+p {
+  background: rgba(255, 255, 255, 0.8);
+  width: 30%;
 }
 
 a {
@@ -174,9 +183,9 @@ hr {
   width: 95%;
   max-width: 960px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  margin-bottom: 70px;
-  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+ 
+ 
 }  
 
 #countdown {
@@ -188,10 +197,21 @@ hr {
   width: 27px;
 }
 
+#extra{
+  font-family: 'Times New Roman', Times, serif; 
+  width: 95%;
+  max-width: 960px; 
+  top: 125px
+
+}
+
 #game {
   background-color: black;
-  background-image: url("../../../Done-in-a-Giphy/assets/images/blue.jpg");
-  background-size: auto;
+  background-image: url("../images/dogCollage.jpg");
+  padding-bottom: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   margin-top: 20px;
   margin-bottom: 20px;
   max-width: 960px; 
@@ -201,7 +221,7 @@ hr {
 h3 {
   font-size: 20px;
   color:navy;
-  margin-bottom: 20px;
+  margin: 10px 0;
 }
     
 img {
@@ -212,12 +232,12 @@ img {
 }
     
 button {
-  background-color: navy;
-  color: white;
-  border-color: red;
+  color:#011031;
+  background-color: #7AE1F1;
+  border-color: #0069AA;
   padding: 5px;
-  margin: 5px;
- }
+  margin: 5px; 
+}
 
  #buttons {
    display: block;
@@ -241,6 +261,8 @@ button {
 
 footer p {
   padding: 12px 0;
+  background: inherit;
+  width: auto;
 }
   
 .row {

@@ -4,7 +4,7 @@
 // These data sources hold arrays of information on table-data, waitinglist, etc.
 // ===============================================================================
 
-var friendData = require("../app/data/friends");
+var dogData = require("../app/data/dogs");
 
 
 
@@ -19,8 +19,8 @@ module.exports = function(app) {
   // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
   // ---------------------------------------------------------------------------
 
-  app.get("/api/survey", function(req, res) {
-    res.json(friendData);
+  app.get("/api/dogs", function(req, res) {
+    res.json(dogData);
   });
 
  
@@ -33,12 +33,12 @@ module.exports = function(app) {
   // Then the server saves the data to the tableData array)
   // ---------------------------------------------------------------------------
 
-  app.post("/api/survey", function(req, res) {
+  app.post("/api/dogs", function(req, res) {
     // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
     // It will do this by sending out the value "true" have a table
     // req.body is available since we're using the body parsing middleware
     
-      friendData.push(req.body);
+      dogData.push(req.body);
       
     
     

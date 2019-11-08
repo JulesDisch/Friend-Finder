@@ -1,111 +1,90 @@
-var triviaChoices = {
-    question1: {
-        question: "The New York Yankees organization began as the Baltimore Orioles in 1901. In 1903 the team moved to New York and took a new name. What was the new name that the team took in 1903?",
-        answers: [
-            "New York Yankees",
-            "New York Blue Sox",
-            "New York Highlanders",
-            "New York Bridges"],
-        correctAnswer: "New York Highlanders",
-        picture: "New_York_Highlanders_Baseball_Team,_1903.jpg",
-        answered: false
-    },
-    question2: {
-        question: "Of these great Yankee teams, which team had the most wins in a season?",
-        answers: ["1927",
-            "1998",
-            "1961",
-            "1978",
-        ],
-        correctAnswer: "1998",
-        picture: "1998.jpg"
-    },
-    question3: {
-        question: "When did the Yankees win their first World Series?",
-        answers: ["1903",
-            "1913",
-            "1923",
-            "1933"],
-        correctAnswer: "1923",
-        picture: "1923.jpg"
-    },
-    question4: {
-        question: "Who was the manager of the Yankees for their first five World Series?",
-        answers: ["Miller Huggins",
-            "Joe McCarthy",
-            "Casey Stengel",
-            "Ralph Houk",],
-        correctAnswer: "Miller Huggins",
-        picture: "miller-huggins.jpg"
-    },
-    question5: {
-        question: "In 2005, Alex Rodriguez became the first solely right-handed Yankee hitter to hit 40 home runs in a season since 1937. Who accomplished the feat in 1937?",
-        answers: [
-            "Babe Ruth",
-            "Mickey Mantle",
-            "Joe DiMaggio",
-            "Roger Maris"],
-        correctAnswer: "Joe DiMaggio",
-        picture: "dimaggio.jpg"
-    },
-    question6: {
-        question: "Who did the Yankees lose to in their first playoff series of the '90s?",
-        answers: ["Boston Red Sox",
-            "Baltimore Orioles",
-            "Detroit Tigers",
-            "Seattle Mariners"],
-        correctAnswer: "Seattle Mariners",
-        picture: "mariners.jpg"
-    },
-    question7: {
-        question: "Who did Lou Gehrig replace at first base for the New York Yankees?",
-        answers: ["Wally Pipp",
-            "Ken Williams",
-            "Earle Combs",
-            "Bob Meusel"],
-        correctAnswer: "Wally Pipp",
-        picture: "wally.jpg"
-    },
-    question8: {
-        question: "What manager led the Yankees to the World Series title in 2000?",
-        answers: ["Yogi Berra",
-            "Don Matingly",
-            "Joe Torre",
-            "Joe Girardi"],
-        correctAnswer: "Joe Torre",
-        picture: "torre.jpg"
-    },
-    question9: {
-        question: "How many at-bats did Mickey Mantle have as a Yankee?",
-        answers: ["7555",
-            "8247",
-            "8102",
-            "8003"],
-        correctAnswer: "8102",
-        picture: "mantle.jpg"
-    },
-    question10: {
-        question: "Why was Babe Ruth number 3?",
-        answers: [
-            "favorite number",
-            "manager's suggestion",
-            "dad's number",
-            "batting order"],
-        correctAnswer: "batting order",
-        picture: "ruth.jpg"
-    },
-};
 
-var number = 30;
-var intervalId;
-var clockRunning = false;
-var triviaUsed;
-var j = 0;
-var correct = 0;
-var wrong = 0;
-var unanswered = 0;
-var questionsLeft = 10;
-var objKeys = Object.keys(this.triviaChoices);
+
+// Chosen CSS
+// var config = {
+//   ".chosen-select": {},
+//   ".chosen-select-deselect": {
+//     allow_single_deselect: true
+//   },
+//   ".chosen-select-no-single": {
+//     disable_search_threshold: 10
+//   },
+//   ".chosen-select-no-results": {
+//     no_results_text: "Oops, nothing found!"
+//   },
+//   ".chosen-select-width": {
+//     width: "95%"
+//   }
+// };
+
+// for (var selector in config) {
+//   $(selector).chosen(config[selector]);
+// }
+
+// Capture the form inputs
+$("#submit").on("click", function(event) {
+  event.preventDefault();
+
+  // Form validation
+  function validateForm() {
+    var isValid = true;
+    $(".required").each(function() {
+      if ($(this).val() === "") {
+        isValid = false;
+        console.log("oops")
+      }
+    });
+
+    $(".chosen-select").each(function() {
+
+      if ($(this).val() === "") {
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+  // If all required fields are filled
+  if (validateForm()) {
+    // Create an object for the user"s data
+    var userData = {
+      name: $("#name").val(),
+      photo: $("#photo").val(),
+      scores: [
+        $("#question1").val(),
+        $("#question2").val(),
+        $("#question3").val(),
+        $("#question4").val(),
+        $("#question5").val(),
+        $("#question6").val(),
+        $("#question7").val(),
+        $("#question8").val(),
+        $("#question9").val(),
+        $("#question10").val()
+      ]
+    };
+
+    // AJAX post the data to the dogs API.
+    $.post("/api/dogs", userData, function(data) {
+
+      // Grab the result from the AJAX post so that the best match's name and photo are displayed.
+      $("#match-name").text(data.name);
+      $("#match-img").attr("src", data.photo);
+
+      // Show the modal with the best match
+     
+
+    });
+
+    resultsModal();
+  } else {
+      fillRequiredModal();
+    
+  }
+});
+
+
+
 
 function restart() {
     questionsLeft--;
@@ -114,115 +93,46 @@ function restart() {
     run();
 }
 
-randomize();
 
-function randomize() {
-    objKeys.sort(function (a, b) { return 0.5 - Math.random() })
-}
 
-$("#countdown").hide();
-
-function timesUpModal() {
-    stop();
-    var timeModal = document.getElementById("Time");
-    var contBtn = document.getElementById("continue");
-    var quitBtn = document.getElementById("quit");
-    timeModal.style.display = "block";
-    contBtn.onclick = function () {
-        timeModal.style.display = "none";
-        $("#buttons").empty();
-        $("#trivia-question").append("<h2> The correct answer is " + triviaChoices[triviaUsed].correctAnswer + "</h2>");
-        $("#trivia-question").append("<img src='assets/images/" + triviaChoices[triviaUsed].picture + "' alt='" + triviaChoices[triviaUsed].correctAnswer + "'>");
-        setTimeout(function () { restart(); }, 2000);
-        unanswered++
-        j++
-    }
-
-    quitBtn.onclick = function () {
-        timeModal.style.display = "none";
-        $("#countdown").hide();
-        $("#trivia-question").text("Ready to play?");
-        $("#buttons").empty();
-        $("#score").empty();
-        $("#help").show();
-        number = 30;
-    }
-}
-
-function gameOverModal() {
-    stop();
-    var overModal = document.getElementById("game-over");
-    var okBtn = document.getElementById("ok");
+function resultsModal() {
+    console.log("yep!")
+    var resultModal = document.getElementById("results-modal");
+    var closeBtn = document.getElementById("close");
     var span = document.getElementsByClassName("close")[0];
-    overModal.style.display = "block";
-    okBtn.onclick = function () {
-        overModal.style.display = "none";
-        $("#countdown").hide();
-        $("#correctText").html("<h2>Correct answers: " + correct + "</h2>");
-        $("#wrongText").html("<h2>Wrong answers: " + wrong + "</h2>");
-        $("#unansweredText").html("<h2>Unanswered: " + unanswered + "</h2>");
-        $("#questionsleftText").html("<h2>Questions left: " + questionsLeft + "</h2>");
-        $("#trivia-question").empty();
-        $("#show-number").empty();
-        $("#trivia-question").append("<h2>Final Score" + " </h2>");
-        $("#help").show();
-        $("#help").html("<button id= 'start'>Play again?" + " </button>");
-        setTimeout(function () {
-            j = 0;
-            correct = 0;
-            wrong = 0;
-            unanswered = 0;
-            questionsLeft = 10;
-            randomize();
-            $("#start").on("click", run);
-        }, 500);
+    resultModal.style.display = "block";
+    closeBtn.onclick = function () {
+        resultModal.style.display = "none";
     }
 
     span.onclick = function () {
-        overModal.style.display = "none";
-        $("#countdown").hide();
-        $("#correctText").html("<h2>Correct answers: " + correct + "</h2>");
-        $("#wrongText").html("<h2>Wrong answers: " + wrong + "</h2>");
-        $("#unansweredText").html("<h2>Unanswered: " + unanswered + "</h2>");
-        $("#questionsleftText").html("<h2>Questions left: " + questionsLeft + "</h2>");
-        $("#trivia-question").empty();
-        $("#show-number").empty();
-        $("#trivia-question").append("<h2>Final Score" + " </h2>");
-        $("#help").show();
-        $("#help").append("<button id= 'start'>Play again?" + " </button>");
-        setTimeout(function () {
-            j = 0;
-            correct = 0;
-            wrong = 0;
-            unanswered = 0;
-            questionsLeft = 10;
-            randomize();
-            $("#start").on("click", run);
-        }, 500);
+        resultModal.style.display = "none";
     }
 
     window.onclick = function (event) {
-        if (event.target == overModal) {
-            overModal.style.display = "none";
-            $("#countdown").hide();
-            $("#correctText").html("<h2>Correct answers: " + correct + "</h2>");
-            $("#wrongText").html("<h2>Wrong answers: " + wrong + "</h2>");
-            $("#unansweredText").html("<h2>Unanswered: " + unanswered + "</h2>");
-            $("#questionsleftText").html("<h2>Questions left: " + questionsLeft + "</h2>");
-            $("#trivia-question").empty();
-            $("#show-number").empty();
-            $("#trivia-question").append("<h2>Final Score" + " </h2>");
-            $("#help").show();
-            $("#help").append("<button id= 'start'>Play again?" + " </button>");
-            setTimeout(function () {
-                j = 0;
-                correct = 0;
-                wrong = 0;
-                unanswered = 0;
-                questionsLeft = 10;
-                randomize();
-                $("#start").on("click", run);
-            }, 500);
+        if (event.target == resultModal) {
+            resultModal.style.display = "none";
+        }
+    }
+}
+
+function fillRequiredModal() {
+   
+    var reqModal = document.getElementById("fillRequired");
+    var okBtn = document.getElementById("ok");
+    var span = document.getElementsByClassName("close")[0];
+    reqModal.style.display = "block";
+    okBtn.onclick = function () {
+        reqModal.style.display = "none";  
+    }
+
+    span.onclick = function () {
+        reqModal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == reqModal) {
+            reqModal.style.display = "none";
         }
     }
 }
