@@ -362,6 +362,20 @@ footer p {
   cursor: pointer;
 }
 
+.close2 {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close2:hover,
+.close2:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
   .main-section {
     width: 100%;

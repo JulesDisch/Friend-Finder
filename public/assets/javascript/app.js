@@ -1,111 +1,119 @@
+var userScore = 0;
+var currentUserScore = 0;
+var newArr = [];
+var dogsArr = [];
+var matchImg;
 
+$("#submit").on("click", function (event) {
+    event.preventDefault();
 
-// Chosen CSS
-// var config = {
-//   ".chosen-select": {},
-//   ".chosen-select-deselect": {
-//     allow_single_deselect: true
-//   },
-//   ".chosen-select-no-single": {
-//     disable_search_threshold: 10
-//   },
-//   ".chosen-select-no-results": {
-//     no_results_text: "Oops, nothing found!"
-//   },
-//   ".chosen-select-width": {
-//     width: "95%"
-//   }
-// };
+    // Form validation
+    function validateForm() {
+        var isValid = true;
+        $(".required").each(function () {
+            if ($(this).val() === "") {
+                isValid = false;
+            }
+        });
+        return isValid;
+    }
 
-// for (var selector in config) {
-//   $(selector).chosen(config[selector]);
-// }
+    // If all required fields are filled
+    if (validateForm()) {
+        // Create an object for the user"s data
+        var userData = {
+            name: $("#name").val(),
+            photo: $("#photo").val(),
+            scores: [
+                $("#question1").val(),
+                $("#question2").val(),
+                $("#question3").val(),
+                $("#question4").val(),
+                $("#question5").val(),
+                $("#question6").val(),
+                $("#question7").val(),
+                $("#question8").val(),
+                $("#question9").val(),
+                $("#question10").val(),
+                $("#question11").val(),
+                $("#question12").val()
+            ]
+        };
 
-// Capture the form inputs
-$("#submit").on("click", function(event) {
-  event.preventDefault();
+        // AJAX post the data to the dogs API.
+        $.post("/api/dogs", userData, function (data) {
 
-  // Form validation
-  function validateForm() {
-    var isValid = true;
-    $(".required").each(function() {
-      if ($(this).val() === "") {
-        isValid = false;
-        console.log("oops")
-      }
-    });
+        });
 
-    $(".chosen-select").each(function() {
+        runDogQuery()
 
-      if ($(this).val() === "") {
-        isValid = false;
-      }
-    });
-    return isValid;
-  }
+        function runDogQuery() {
+            // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
+            $.ajax({ url: "/api/dogs", method: "GET" })
+                .then(function (dogData) {
 
-  // If all required fields are filled
-  if (validateForm()) {
-    // Create an object for the user"s data
-    var userData = {
-      name: $("#name").val(),
-      photo: $("#photo").val(),
-      scores: [
-        $("#question1").val(),
-        $("#question2").val(),
-        $("#question3").val(),
-        $("#question4").val(),
-        $("#question5").val(),
-        $("#question6").val(),
-        $("#question7").val(),
-        $("#question8").val(),
-        $("#question9").val(),
-        $("#question10").val()
-      ]
-    };
+                    // Here we then log the tableData to console, where it will show up as an object.
+                    console.log(dogData);
+                    console.log(newArr[0])
+                    console.log("------------------------------------");
 
-    // AJAX post the data to the dogs API.
-    $.post("/api/dogs", userData, function(data) {
+                    // Loop through and display each of the customers
+                    for (var i = 0; i < 11; i++) {
+                        for (var j = 0; j < newArr.length; j++) {
+                            if (newArr[j] === dogData[i].scores[j]) {
+                                dogsArr.push(dogData[i])
+                                console.log(dogData[i].name)
+                            }
+                        }
+                    }
+                    console.log(dogsArr)
+                    var counts = {};
+                    var compare = 0;
+                    var mostFrequent;
+                    (function (array) {
+                        for (var i = 0, len = array.length; i < len; i++) {
+                            var word = array[i].name;
 
-      // Grab the result from the AJAX post so that the best match's name and photo are displayed.
-      $("#match-name").text(data.name);
-      $("#match-img").attr("src", data.photo);
-
-      // Show the modal with the best match
-     
-
-    });
-
-    resultsModal();
-  } else {
-      fillRequiredModal();
-    
-  }
+                            if (counts[word] === undefined) {
+                                counts[word] = 1;
+                            } else {
+                                counts[word] = counts[word] + 1;
+                            }
+                            if (counts[word] > compare) {
+                                compare = counts[word];
+                                mostFrequent = dogsArr[i].name;
+                                mostFrequentImg = dogsArr[i].photo;
+                            }
+                           
+                            $("#match-name").text(mostFrequent);
+                            $("#match-image").attr("src", "assets/images/" + mostFrequentImg);
+                        }
+                        return mostFrequent;
+                    })(dogsArr);
+                });
+        }
+        console.log(userData.scores)
+        for (var i = 0; i < userData.scores.length; i++) {
+            newArr.push(parseInt(userData.scores[i]));
+        }
+        console.log(newArr)
+        console.log(userScore);
+        resultsModal();
+    } else {
+        fillRequiredModal();
+    }
 });
 
-
-
-
-function restart() {
-    questionsLeft--;
-    number = 30;
-    $("#show-number").html(number);
-    run();
-}
-
-
-
 function resultsModal() {
-    console.log("yep!")
     var resultModal = document.getElementById("results-modal");
-    var closeBtn = document.getElementById("close");
-    var span = document.getElementsByClassName("close")[0];
+    var closeBtn = document.getElementById("closed");
+    var span2 = document.getElementsByClassName("close2")[0];
     resultModal.style.display = "block";
     closeBtn.onclick = function () {
         resultModal.style.display = "none";
     }
 
-    span.onclick = function () {
+    span2.onclick = function () {
         resultModal.style.display = "none";
     }
 
@@ -117,13 +125,12 @@ function resultsModal() {
 }
 
 function fillRequiredModal() {
-   
     var reqModal = document.getElementById("fillRequired");
     var okBtn = document.getElementById("ok");
     var span = document.getElementsByClassName("close")[0];
     reqModal.style.display = "block";
     okBtn.onclick = function () {
-        reqModal.style.display = "none";  
+        reqModal.style.display = "none";
     }
 
     span.onclick = function () {
@@ -135,79 +142,4 @@ function fillRequiredModal() {
             reqModal.style.display = "none";
         }
     }
-}
-
-function renderTrivia() {
-    this.triviaUsed = objKeys[j];
-    if (j === 10) {
-        gameOverModal();
-    } else {
-        document.querySelector("#trivia-question").innerHTML = this.triviaChoices[this.triviaUsed].question;
-        $("#correctText").html("<h2>Correct answers: " + correct + "</h2>");
-        $("#wrongText").html("<h2>Wrong answers: " + wrong + "</h2>");
-        $("#unansweredText").html("<h2>Unanswered: " + unanswered + "</h2>");
-        $("#questionsleftText").html("<h2>Questions left: " + questionsLeft + "</h2>");
-        for (var i = 0; i < this.triviaChoices[this.triviaUsed].answers.length; i++) {
-            var answerBtn = $("<button>");
-            answerBtn.addClass("answer-button");
-            answerBtn.attr("data-answer", this.triviaChoices[this.triviaUsed].answers[i]);
-            answerBtn.text(this.triviaChoices[this.triviaUsed].answers[i]);
-            if ((this.triviaChoices[this.triviaUsed].answers[i]) === (this.triviaChoices[this.triviaUsed].correctAnswer)) {
-                answerBtn.attr("data-correct", "true");
-            } else {
-                answerBtn.attr("data-correct", "false");
-            }
-            $("#buttons").append(answerBtn);
-        }
-
-        $(".answer-button").on("click", function () {
-            var Answer = $("<div>");
-            var rightAnswer = $(this).attr("data-correct");
-            Answer.text($(this).attr("data-answer"));
-            $("#buttons").empty();
-            stop();
-            if (rightAnswer === "true") {
-                correct++
-                $("#trivia-question").append("<h2>" + $(this).attr("data-answer") + " is right</h2>");
-                $("#trivia-question").append("<img src='assets/images/" + triviaChoices[triviaUsed].picture + "' alt='" + triviaChoices[triviaUsed].correctAnswer + "'>");
-                setTimeout(function () { restart(); }, 2000);
-                j++;
-            } else {
-                wrong++
-                $("#trivia-question").append(
-                    "<h2>" + $(this).attr("data-answer") + " is wrong</h2>");
-                $("#trivia-question").append("<h2> The correct answer is " + triviaChoices[triviaUsed].correctAnswer + "</h2>");
-                $("#trivia-question").append("<img src='assets/images/" + triviaChoices[triviaUsed].picture + "' alt='" + triviaChoices[triviaUsed].correctAnswer + "'>");
-                setTimeout(function () { restart(); }, 2000);
-                j++;
-            };
-        })
-    }
-};
-
-$("#start").on("click", run);
-
-function run() {
-    if (!clockRunning) {
-        clearInterval(intervalId);
-        intervalId = setInterval(decrement, 1000);
-        clockRunning = true;
-        $("#help").hide();
-        decrement();
-        renderTrivia();
-    }
-}
-
-function decrement() {
-    number--;
-    $("#countdown").show();
-    $("#show-number").html(number);
-    if (number === 0) {
-        timesUpModal();
-    }
-}
-
-function stop() {
-    clearInterval(intervalId);
-    clockRunning = false;
 }
