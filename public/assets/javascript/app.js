@@ -3,7 +3,8 @@ var currentUserScore = 0;
 var newArr = [];
 var dogsArr = [];
 var matchImg;
-
+dogSearch();
+function dogSearch (){
 $("#submit").on("click", function (event) {
     event.preventDefault();
 
@@ -20,7 +21,7 @@ $("#submit").on("click", function (event) {
 
     // If all required fields are filled
     if (validateForm()) {
-        // Create an object for the user"s data
+        // Create an object for the user's data
         var userData = {
             name: $("#name").val(),
             photo: $("#photo").val(),
@@ -42,22 +43,18 @@ $("#submit").on("click", function (event) {
 
         // AJAX post the data to the dogs API.
         $.post("/api/dogs", userData, function (data) {
-
+           
         });
-
         runDogQuery()
+       
 
         function runDogQuery() {
             // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
             $.ajax({ url: "/api/dogs", method: "GET" })
                 .then(function (dogData) {
-
-                    // Here we then log the tableData to console, where it will show up as an object.
                     console.log(dogData);
                     console.log(newArr[0])
                     console.log("------------------------------------");
-
-                    // Loop through and display each of the customers
                     for (var i = 0; i < 11; i++) {
                         for (var j = 0; j < newArr.length; j++) {
                             if (newArr[j] === dogData[i].scores[j]) {
@@ -88,7 +85,7 @@ $("#submit").on("click", function (event) {
                             $("#match-name").text(mostFrequent);
                             $("#match-image").attr("src", "assets/images/" + mostFrequentImg);
                         }
-                        return mostFrequent;
+                        return console.log(mostFrequent);
                     })(dogsArr);
                 });
         }
@@ -102,7 +99,7 @@ $("#submit").on("click", function (event) {
     } else {
         fillRequiredModal();
     }
-});
+});}
 
 function resultsModal() {
     var resultModal = document.getElementById("results-modal");
@@ -111,15 +108,57 @@ function resultsModal() {
     resultModal.style.display = "block";
     closeBtn.onclick = function () {
         resultModal.style.display = "none";
+        $("#question1").val(""),
+        $("#question2").val(""),
+        $("#question3").val(""),
+        $("#question4").val(""),
+        $("#question5").val(""),
+        $("#question6").val(""),
+        $("#question7").val(""),
+        $("#question8").val(""),
+        $("#question9").val(""),
+        $("#question10").val(""),
+        $("#question11").val(""),
+        $("#question12").val("");
+        newArr = [];
+        dogSearch();
     }
 
     span2.onclick = function () {
         resultModal.style.display = "none";
+        $("#question1").val(""),
+        $("#question2").val(""),
+        $("#question3").val(""),
+        $("#question4").val(""),
+        $("#question5").val(""),
+        $("#question6").val(""),
+        $("#question7").val(""),
+        $("#question8").val(""),
+        $("#question9").val(""),
+        $("#question10").val(""),
+        $("#question11").val(""),
+        $("#question12").val("");
+        newArr = [];
+        dogSearch();
     }
 
     window.onclick = function (event) {
         if (event.target == resultModal) {
             resultModal.style.display = "none";
+            $("#question1").val(""),
+            $("#question2").val(""),
+            $("#question3").val(""),
+            $("#question4").val(""),
+            $("#question5").val(""),
+            $("#question6").val(""),
+            $("#question7").val(""),
+            $("#question8").val(""),
+            $("#question9").val(""),
+            $("#question10").val(""),
+            $("#question11").val(""),
+            $("#question12").val("");
+            newArr = [];
+            dogSearch();
         }
     }
 }

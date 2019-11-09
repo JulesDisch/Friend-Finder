@@ -178,7 +178,7 @@ hr {
   border-radius: 10px;
 }
 
-#trivia-block {
+#survey-block {
   font-family: 'Times New Roman', Times, serif; 
   width: 95%;
   max-width: 960px;
@@ -188,21 +188,11 @@ hr {
  
 }  
 
-#countdown {
-  text-align: right;
-}
-  
-#show-number{
-  float: right;
-  width: 27px;
-}
-
 #extra{
   font-family: 'Times New Roman', Times, serif; 
   width: 95%;
   max-width: 960px; 
   top: 125px
-
 }
 
 #game {
@@ -265,72 +255,12 @@ footer p {
   width: auto;
 }
   
-.row {
-  width: 95%;
-  margin-top: 30px;
-  max-width: 960px;
-  overflow: auto; 
-  clear: both;
-}
-
-.column-1 {
-  float: left;
-  width: 50%;
-  margin: auto;
-  padding: 0 10px 0 0
-}
-
-.column-2 {
-  float: right;
-  width: 50%;
-  padding: 0 0 0 10px;
-  
-}
-
-#score {
-  margin-bottom: 20px;
-}
-
-#score .column-1 {
-  width: 25%;
-  margin: auto;
-  text-align: center;
-  padding: 0 10px 0 0
-}
-
-#score .column-2 {
-  float: left;
-  width: 25%;
-  margin: auto;
-  text-align: center;
-  padding: 0 10px 0 10px;
-}
-
-#score .column-2 h2 {
-  padding-left: 0%;
-}
-
-#score .column-3 {
-  float: left;
-  width: 25%;
-  margin: auto;
-  text-align: center;
-  padding: 0 10px 0 10px;
-}
-
-#score .column-4 {
-  float: left;
-  width: 25%;
-  margin: auto;
-  text-align: center;
-  padding: 0 0 0 10px;
-}
 
 .modal {
   display: none; 
   position: fixed; 
   z-index: 1; 
-  padding-top: 350px; 
+  padding-top: 100px; 
   left: 0;
   top: 0;
   width: 100%; 
@@ -445,22 +375,6 @@ footer p {
   .main-section {
     width: 100%;
     margin-left: 0px
-  }
-
-  #score .column-1 {
-    width: 50%;
-  }
-    
-  #score .column-2 {
-    width: 50%;
-  }
-
-  #score .column-3 {
-    width: 50%;
-  }
-
-  #score .column-4 {
-    width: 50%;
   }
         
 }
