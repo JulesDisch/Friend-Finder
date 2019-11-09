@@ -3,8 +3,7 @@ var currentUserScore = 0;
 var newArr = [];
 var dogsArr = [];
 var matchImg;
-dogSearch();
-function dogSearch (){
+
 $("#submit").on("click", function (event) {
     event.preventDefault();
 
@@ -81,7 +80,6 @@ $("#submit").on("click", function (event) {
                                 mostFrequent = dogsArr[i].name;
                                 mostFrequentImg = dogsArr[i].photo;
                             }
-                           
                             $("#match-name").text(mostFrequent);
                             $("#match-image").attr("src", "assets/images/" + mostFrequentImg);
                         }
@@ -99,7 +97,7 @@ $("#submit").on("click", function (event) {
     } else {
         fillRequiredModal();
     }
-});}
+});
 
 function resultsModal() {
     var resultModal = document.getElementById("results-modal");
@@ -121,7 +119,8 @@ function resultsModal() {
         $("#question11").val(""),
         $("#question12").val("");
         newArr = [];
-        dogSearch();
+        dogsArr = []
+       
     }
 
     span2.onclick = function () {
@@ -139,7 +138,8 @@ function resultsModal() {
         $("#question11").val(""),
         $("#question12").val("");
         newArr = [];
-        dogSearch();
+        dogsArr = []
+        
     }
 
     window.onclick = function (event) {
@@ -158,7 +158,8 @@ function resultsModal() {
             $("#question11").val(""),
             $("#question12").val("");
             newArr = [];
-            dogSearch();
+            dogsArr = []
+            
         }
     }
 }

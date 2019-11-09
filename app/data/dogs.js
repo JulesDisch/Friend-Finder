@@ -151,7 +151,7 @@ var dogArray = [
     },
     {
       name: "Siberian Husky",
-      photo: "Siberian-Husky-On-White-03",
+      photo: "Siberian-Husky-On-White-03.jpg",
       scores: [
         5,
         4,
