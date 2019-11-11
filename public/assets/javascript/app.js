@@ -52,8 +52,6 @@ $("#submit").on("click", function (event) {
             $.ajax({ url: "/api/dogs", method: "GET" })
                 .then(function (dogData) {
                     console.log(dogData);
-                    console.log(newArr[0])
-                    console.log("------------------------------------");
                     for (var i = 0; i < 11; i++) {
                         for (var j = 0; j < newArr.length; j++) {
                             if (newArr[j] === dogData[i].scores[j]) {
@@ -92,7 +90,6 @@ $("#submit").on("click", function (event) {
             newArr.push(parseInt(userData.scores[i]));
         }
         console.log(newArr)
-        console.log(userScore);
         resultsModal();
     } else {
         fillRequiredModal();
@@ -106,6 +103,8 @@ function resultsModal() {
     resultModal.style.display = "block";
     closeBtn.onclick = function () {
         resultModal.style.display = "none";
+        $("#name").val(""),
+        $("#photo").val(""),
         $("#question1").val(""),
         $("#question2").val(""),
         $("#question3").val(""),
@@ -125,6 +124,8 @@ function resultsModal() {
 
     span2.onclick = function () {
         resultModal.style.display = "none";
+        $("#name").val(""),
+        $("#photo").val(""),
         $("#question1").val(""),
         $("#question2").val(""),
         $("#question3").val(""),
@@ -145,6 +146,8 @@ function resultsModal() {
     window.onclick = function (event) {
         if (event.target == resultModal) {
             resultModal.style.display = "none";
+            $("#name").val(""),
+            $("#photo").val(""),
             $("#question1").val(""),
             $("#question2").val(""),
             $("#question3").val(""),
